@@ -45,11 +45,11 @@ class _LikedJobsScreenState extends State<LikedJobsScreen> {
   void fetchData() async {
     final storage = FlutterSecureStorage();
     String? userId = await storage.read(key: 'id');
-    print(userId);
     final response = await http
         .get(Uri.parse('https://zbla.dev/api/is-liked/$userId'), headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${await storage.read(key: 'token')}'
     });
     final responseCategories = await http
         .get(Uri.parse('https://zbla.dev/api/categories'), headers: {
@@ -152,9 +152,16 @@ class _LikedJobsScreenState extends State<LikedJobsScreen> {
                       final _userId = await storage.read(key: 'id');
                       final response = await http.post(
                         Uri.parse('https://zbla.dev/api/like'),
-                        headers: {'Content-Type': 'application/json'},
-                        body: jsonEncode(
-                            {'userId': _userId, 'jobId': _items[index]['id']}),
+                        headers: {
+                          'Content-Type': 'application/json',
+                          'Accept': 'application/json',
+                          'Authorization':
+                              'Bearer ${await storage.read(key: 'token')}'
+                        },
+                        body: jsonEncode({
+                          'userId': _userId,
+                          'jobId': _items[index]['id'],
+                        }),
                       );
                       fetchData();
                     },

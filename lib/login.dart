@@ -55,7 +55,7 @@ class _SignInScreenState extends State<SignInScreen> {
         final token = responseJson['token'];
 
         final _storage = const FlutterSecureStorage();
-        await _storage.write(key: 'token ', value: token);
+        await _storage.write(key: 'token', value: token);
         await _storage.write(
             key: 'id', value: responseJson['user']['id'].toString());
 
@@ -64,6 +64,8 @@ class _SignInScreenState extends State<SignInScreen> {
             builder: (context) => Homepage(),
           ),
         );
+
+        print(token);
       }
     } catch (e) {
       print(e.toString());
