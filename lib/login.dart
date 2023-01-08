@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/register.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -83,7 +84,7 @@ class _SignInScreenState extends State<SignInScreen> {
           children: [
             TextFormField(
               controller: emailController,
-              decoration: InputDecoration(hintText: 'Email'),
+              decoration: InputDecoration(hintText: 'Epošta'),
             ),
             SizedBox(
               height: 20,
@@ -91,7 +92,7 @@ class _SignInScreenState extends State<SignInScreen> {
             TextFormField(
               obscureText: true,
               controller: passwordController,
-              decoration: InputDecoration(hintText: 'Password'),
+              decoration: InputDecoration(hintText: 'Geslo'),
             ),
             SizedBox(
               height: 40,
@@ -107,7 +108,29 @@ class _SignInScreenState extends State<SignInScreen> {
                     color: Colors.green,
                     borderRadius: BorderRadius.circular(10)),
                 child: Center(
-                  child: Text('Login'),
+                  child: Text('Prijava'),
+                ),
+              ),
+              //add sign up button
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => SignUpScreen(),
+                  ),
+                );
+              },
+              child: Container(
+                height: 50,
+                decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(10)),
+                child: Center(
+                  child: Text('Registracija'),
                 ),
               ),
             )

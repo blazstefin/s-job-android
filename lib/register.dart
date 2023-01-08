@@ -17,6 +17,24 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final _storage = const FlutterSecureStorage();
+
+  void initState() {
+    super.initState();
+    _checkToken();
+  }
+
+  Future<void> _checkToken() async {
+    final token = await _storage.read(key: 'token');
+    if (token != null) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => Homepage(),
+        ),
+      );
+    }
+  }
+
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -57,6 +75,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
       final _storage = const FlutterSecureStorage();
       await _storage.write(key: 'token ', value: token);
+      await _storage.write(
+          key: 'id', value: responseJson['user']['id'].toString());
 
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -84,14 +104,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
               TextField(
                 controller: nameController,
                 decoration: const InputDecoration(
-                  hintText: 'Enter your name',
+                  hintText: 'Ime in priimek',
                 ),
               ),
               const SizedBox(height: 10),
               TextField(
                 controller: emailController,
                 decoration: const InputDecoration(
-                  hintText: 'Enter your email',
+                  hintText: 'E-pošta',
                 ),
               ),
               const SizedBox(height: 10),
@@ -100,28 +120,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 //hide text that is entered
                 obscureText: true,
                 decoration: const InputDecoration(
-                  hintText: 'Enter your password',
+                  hintText: 'Geslo',
                 ),
               ),
               const SizedBox(height: 10),
               TextField(
                 controller: addressController,
                 decoration: const InputDecoration(
-                  hintText: 'Enter your address',
+                  hintText: 'Naslov',
                 ),
               ),
               const SizedBox(height: 10),
               TextField(
                 controller: cityController,
                 decoration: const InputDecoration(
-                  hintText: 'Enter your city',
+                  hintText: 'Mesto',
                 ),
               ),
               const SizedBox(height: 10),
               TextField(
                 controller: zipController,
                 decoration: const InputDecoration(
-                  hintText: 'Enter your zip',
+                  hintText: 'Poštna številka',
                 ),
               ),
               const SizedBox(height: 10),
@@ -136,18 +156,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     zipController.text,
                   );
                 },
-                child: const Text('Sign Up'),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => SignInScreen(),
-                    ),
-                  );
-                },
-                child: const Text('Login'),
+                child: const Text('Registracija'),
               ),
             ],
           ),

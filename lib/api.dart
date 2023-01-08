@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/widgets.dart';
 
 import 'liked_posts.dart';
+import 'profile.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -33,7 +36,6 @@ class _HomepageState extends State<Homepage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     fetchData();
   }
@@ -74,6 +76,7 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: const Text('S-Job'),
           //button to go to liked jobs
           actions: [
@@ -82,7 +85,13 @@ class _HomepageState extends State<Homepage> {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => LikedJobsScreen()));
                 },
-                icon: const Icon(Icons.favorite))
+                icon: const Icon(Icons.favorite)),
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => ProfileScreen()));
+                },
+                icon: const Icon(Icons.person))
           ],
         ),
         body: ListView.builder(
@@ -102,6 +111,16 @@ class _HomepageState extends State<Homepage> {
                               .roundToDouble())
                           .toStringAsFixed(2) +
                       ' €/h'),
+                  onTap: () async {
+                    final storage = FlutterSecureStorage();
+                    final _userId = await storage.read(key: 'id');
+                    final response = await http.post(
+                      Uri.parse('https://zbla.dev/api/like'),
+                      headers: {'Content-Type': 'application/json'},
+                      body: jsonEncode(
+                          {'userId': _userId, 'jobId': _items[index]['id']}),
+                    );
+                  },
                 ),
               ),
             );

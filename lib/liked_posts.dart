@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_application_1/profile.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
@@ -85,10 +86,10 @@ class _LikedJobsScreenState extends State<LikedJobsScreen> {
           actions: [
             IconButton(
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => LikedJobsScreen()));
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => ProfileScreen()));
                 },
-                icon: const Icon(Icons.favorite))
+                icon: const Icon(Icons.person))
           ],
         ),
         body: ListView.builder(
@@ -108,6 +109,19 @@ class _LikedJobsScreenState extends State<LikedJobsScreen> {
                               .roundToDouble())
                           .toStringAsFixed(2) +
                       ' €/h'),
+                  onTap: () async {
+                    final storage = FlutterSecureStorage();
+                    final _userId = await storage.read(key: 'id');
+                    // Make the POST request to the API
+                    final response = await http.post(
+                      Uri.parse('https://zbla.dev/api/like'),
+                      headers: {'Content-Type': 'application/json'},
+                      body: jsonEncode(
+                          {'userId': _userId, 'jobId': _items[index]['id']}),
+                    );
+                    fetchData();
+                    // Check the status code of the respons
+                  },
                 ),
               ),
             );

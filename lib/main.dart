@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/api.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 import 'login.dart';
@@ -13,24 +14,21 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  final storage = const FlutterSecureStorage();
+
+  //if there is a token, run home page
+  //if there is no token, run login page
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
+        title: 'S-Job',
         theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // Try running your application with "flutter run". You'll see the
-          // application has a blue toolbar. Then, without quitting the app, try
-          // changing the primarySwatch below to Colors.green and then invoke
-          // "hot reload" (press "r" in the console where you ran "flutter run",
-          // or simply save your changes to "hot reload" in a Flutter IDE).
-          // Notice that the counter didn't reset back to zero; the application
-          // is not restarted.
           primarySwatch: Colors.green,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: SignUpScreen());
+        home: SignInScreen());
   }
 }
 
@@ -54,7 +52,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
