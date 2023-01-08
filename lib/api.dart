@@ -155,7 +155,12 @@ class _HomepageState extends State<Homepage> {
                       final _userId = await storage.read(key: 'id');
                       final response = await http.post(
                         Uri.parse('https://zbla.dev/api/like'),
-                        headers: {'Content-Type': 'application/json'},
+                        headers: {
+                          'Content-Type': 'application/json',
+                          'Accept': 'application/json',
+                          'Authorization':
+                              'Bearer ${await storage.read(key: 'token')}'
+                        },
                         body: jsonEncode(
                             {'userId': _userId, 'jobId': _items[index]['id']}),
                       );
