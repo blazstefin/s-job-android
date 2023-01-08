@@ -51,11 +51,6 @@ class _LikedJobsScreenState extends State<LikedJobsScreen> {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     });
-    final List<dynamic> items = json.decode(response.body);
-    setState(() {
-      _items = items.map((item) => item as Map<String, dynamic>).toList();
-    });
-
     final responseCategories = await http
         .get(Uri.parse('https://zbla.dev/api/categories'), headers: {
       'Content-Type': 'application/json',
@@ -75,6 +70,10 @@ class _LikedJobsScreenState extends State<LikedJobsScreen> {
     for (var item in itemsProvinces) {
       provinces[item['id']] = item['name'];
     }
+    final List<dynamic> items = json.decode(response.body);
+    setState(() {
+      _items = items.map((item) => item as Map<String, dynamic>).toList();
+    });
   }
 
   @override

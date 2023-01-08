@@ -41,16 +41,6 @@ class _HomepageState extends State<Homepage> {
   }
 
   void fetchData() async {
-    final response = await http.get(Uri.parse('https://zbla.dev/api/jobs'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        });
-    final List<dynamic> items = json.decode(response.body);
-    setState(() {
-      _items = items.map((item) => item as Map<String, dynamic>).toList();
-    });
-
     final responseCategories = await http
         .get(Uri.parse('https://zbla.dev/api/categories'), headers: {
       'Content-Type': 'application/json',
@@ -70,6 +60,16 @@ class _HomepageState extends State<Homepage> {
     for (var item in itemsProvinces) {
       provinces[item['id']] = item['name'];
     }
+
+    final response = await http.get(Uri.parse('https://zbla.dev/api/jobs'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        });
+    final List<dynamic> items = json.decode(response.body);
+    setState(() {
+      _items = items.map((item) => item as Map<String, dynamic>).toList();
+    });
   }
 
   @override
